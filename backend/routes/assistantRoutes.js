@@ -1,0 +1,9 @@
+const express = require("express");
+const router = express.Router();
+
+const authMiddleware = require("../middleware/authMiddleware");
+const { chatWithAssistant } = require("../controllers/assistantController");
+
+router.post("/chat", authMiddleware, chatWithAssistant);
+
+module.exports = router;
