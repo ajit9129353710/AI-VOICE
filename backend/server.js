@@ -12,7 +12,8 @@ const app = express();
 
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || "http://localhost:5173",
+    origin: true,
+    credentials: true,
   })
 );
 
@@ -24,6 +25,7 @@ app.get("/", (req, res) => {
     message: "VoxMate AI Backend is Running!",
   });
 });
+
 app.get("/api/health", (req, res) => {
   res.status(200).json({
     success: true,
