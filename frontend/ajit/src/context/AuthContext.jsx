@@ -16,13 +16,13 @@ export function AuthProvider({ children }) {
   };
 
   const login = async (email, password) => {
-    const response = await api.post("/auth/login", { email, password });
+    const response = await api.post("/api/auth/login", { email, password });
     saveLogin(response.data);
     return response.data;
   };
 
   const signup = async (name, email, password) => {
-    const response = await api.post("/auth/signup", {
+    const response = await api.post("/api/auth/signup", {
       name,
       email,
       password,
