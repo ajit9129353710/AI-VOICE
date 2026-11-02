@@ -26,8 +26,8 @@ useEffect(() => {
 const loadDashboard = async () => {
 try {
 const [taskResponse, noteResponse] = await Promise.all([
-api.get("/tasks"),
-api.get("/notes"),
+api.get("/api/tasks"),
+api.get("/api/notes"),
 ]);
 
     setTasks(taskResponse.data.tasks || []);
