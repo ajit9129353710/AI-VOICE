@@ -14,7 +14,7 @@ const [error, setError] = useState("");
 
 const fetchNotes = async () => {
 try {
-const response = await api.get("/notes");
+const response = await api.get("/api/notes");
 setNotes(response.data.notes || []);
 setError("");
 } catch (err) {
@@ -42,7 +42,7 @@ try {
   setSaving(true);
   setError("");
 
-  await api.post("/notes", {
+  await api.post("/api/notes", {
     title: title.trim(),
     content: content.trim(),
   });

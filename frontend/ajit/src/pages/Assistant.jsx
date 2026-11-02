@@ -53,7 +53,7 @@ setError("");
 setLoading(true);
 
 try {
-  const response = await api.post("/assistant/chat", { message });
+  const response = await api.post("/api/assistant/chat", { message });
 
   const reply =
     response.data.reply ||

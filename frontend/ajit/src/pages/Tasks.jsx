@@ -14,7 +14,7 @@ const [saving, setSaving] = useState(false);
 
 const fetchTasks = async () => {
 try {
-const response = await api.get("/tasks");
+const response = await api.get("/api/tasks");
 setTasks(response.data.tasks || []);
 setError("");
 } catch (err) {
@@ -39,7 +39,7 @@ try {
   setSaving(true);
   setError("");
 
-  await api.post("/tasks", {
+  await api.post("/api/tasks", {
     title: title.trim(),
     description: description.trim(),
   });
