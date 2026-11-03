@@ -17,13 +17,12 @@ const chatWithAssistant = async (req, res) => {
     const text = message.trim();
     const lower = text.toLowerCase();
 
-    if (
-      /^(save|create|add)\s+(a\s+)?note\b/i.test(text)
-    ) {
-      const content = text.replace(
-        /^(save|create|add)\s+(a\s+)?note\s*[:\-]?\s*/i,
-        ""
-      ).trim();
+    const noteMatch = text.match(
+      /^(?:please\s+)?(?:save|create|add)\s+(?:(?:my|a|the)\s+)?notes?\b\s*[:,-]?\s*(.*)$/i
+    );
+
+    if (noteMatch) {
+      const content = noteMatch[1].trim();
 
       if (!content) {
         return res.json({
@@ -63,9 +62,7 @@ const chatWithAssistant = async (req, res) => {
       }
 
       const noteList = notes
-        .map((note, index) =>
-          `${index + 1}. ${note.title}: ${note.content}`
-        )
+        .map((note, index) => `${index + 1}. ${note.title}: ${note.content}`)
         .join("\n");
 
       return res.json({
@@ -75,13 +72,10 @@ const chatWithAssistant = async (req, res) => {
       });
     }
 
-    if (
-      /^(add|create|save)\s+(a\s+)?task\b/i.test(text)
-    ) {
-      const title = text.replace(
-        /^(add|create|save)\s+(a\s+)?task\s*[:\-]?\s*/i,
-        ""
-      ).trim();
+    if (/^(add|create|save)\s+(a\s+)?task\b/i.test(text)) {
+      const title = text
+        .replace(/^(add|create|save)\s+(a\s+)?task\s*[:,-]?\s*/i, "")
+        .trim();
 
       if (!title) {
         return res.json({
@@ -122,9 +116,7 @@ const chatWithAssistant = async (req, res) => {
       }
 
       const taskList = tasks
-        .map((task, index) =>
-          `${index + 1}. ${task.title}`
-        )
+        .map((task, index) => `${index + 1}. ${task.title}`)
         .join("\n");
 
       return res.json({
@@ -150,10 +142,11 @@ const chatWithAssistant = async (req, res) => {
       }
 
       const taskList = tasks
-        .map((task, index) =>
-          `${index + 1}. ${task.title} - ${
-            task.completed ? "Completed" : "Pending"
-          }`
+        .map(
+          (task, index) =>
+            `${index + 1}. ${task.title} - ${
+              task.completed ? "Completed" : "Pending"
+            }`
         )
         .join("\n");
 
@@ -164,13 +157,13 @@ const chatWithAssistant = async (req, res) => {
       });
     }
 
-    if (
-      /^(complete|finish|done with)\s+(my\s+)?task\b/i.test(text)
-    ) {
-      const taskTitle = text.replace(
-        /^(complete|finish|done with)\s+(my\s+)?task\s*[:\-]?\s*/i,
-        ""
-      ).trim();
+    if (/^(complete|finish|done with)\s+(my\s+)?task\b/i.test(text)) {
+      const taskTitle = text
+        .replace(
+          /^(complete|finish|done with)\s+(my\s+)?task\s*[:,-]?\s*/i,
+          ""
+        )
+        .trim();
 
       if (!taskTitle) {
         return res.json({
@@ -201,13 +194,13 @@ const chatWithAssistant = async (req, res) => {
         task,
       });
     }
+
     const reply = await generateAIResponse(text);
 
     return res.status(200).json({
       success: true,
       reply,
     });
-
   } catch (error) {
     console.error("AI Assistant Error:", error);
 
